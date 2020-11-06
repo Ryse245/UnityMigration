@@ -25,8 +25,12 @@ public class ForceGenerator2D : MonoBehaviour
 
 public class SpringForceGenerator : ForceGenerator2D
 {
+    [SerializeField]
     GameObject firstObj, secondObj; //God I hate naming things
+
+    [SerializeField]
     float springConstant, springLength;
+
     public override void updateForces()
     {
 
@@ -34,8 +38,12 @@ public class SpringForceGenerator : ForceGenerator2D
 }
 public class BuoyancyForceGenerator : ForceGenerator2D
 {
+    [SerializeField]
     GameObject mTarget;
+
+    [SerializeField]
     float mMaximumDepth, mVolume, mWaterHeight, mLiquidDensity;
+
     public override void updateForces()
     {
 

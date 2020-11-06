@@ -5,8 +5,10 @@ using UnityEngine;
 public class Particle2DContact : MonoBehaviour
 {
     GameObject firstContact, secondContact; //AAAAAAAAAAAAA NAMING
-    Vector2 contactNormal, firstMove, secondMove;   //Not sure about the "moves" tbh, but Dean says we'd need them
+    Vector3 contactNormal, firstMove, secondMove;   //Not sure about the "moves" tbh, but Dean says we'd need them
     float restitutionCoefficient, penetration;  //( ͡° ͜ʖ ͡°)
+
+
     // Start is called before the first frame update
     void Start()
     {
