@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Particle2D : MonoBehaviour
 {
+    float mass, damping;
+    Vector2 velocity, acceleration, accumulatedForces;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +17,15 @@ public class Particle2D : MonoBehaviour
     {
         
     }
+
+}
+
+public class Integrator : Particle2D
+{   
+
+    void Integrate()
+    {
+
+    }
+
 }
