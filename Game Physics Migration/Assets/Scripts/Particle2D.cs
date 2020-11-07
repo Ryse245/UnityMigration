@@ -37,6 +37,16 @@ public class Particle2D : MonoBehaviour
         return ref velocity;
     }
 
+    public Vector3 getVelocity()
+    {
+        return velocity;
+    }
+
+    public void setVelocity(Vector3 vel)
+    {
+        velocity = vel;
+    }
+
     public Vector3 getAcceleration()
     {
         return acceleration;

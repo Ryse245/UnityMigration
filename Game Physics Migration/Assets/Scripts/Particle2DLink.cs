@@ -26,7 +26,18 @@ public class ParticleCable : Particle2DLink
 
     public override void createContacts(ref List<Particle2DContact> contacts)
     {
-        
+        float length = getCurrentLength();
+        if (length < mMaxLength)
+            return;
+
+        Vector3 normal = mObject2.transform.position - mObject2.transform.position;
+        normal.Normalize();
+
+        float penetration = length - mMaxLength;
+
+        Particle2DContact contact = new Particle2DContact(mObject1.gameObject, mObject2.gameObject, normal, mRestitution, penetration);
+
+        contacts.Add(contact);
     }
 }
 
@@ -37,6 +48,6 @@ public class ParticleRod : Particle2DLink
 
     public override void createContacts(ref List<Particle2DContact> contacts)
     {
-
+        // ben my rod code is bad please help
     }
 }
