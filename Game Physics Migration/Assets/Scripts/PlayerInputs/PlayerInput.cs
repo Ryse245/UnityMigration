@@ -12,7 +12,6 @@ public class PlayerInput : MonoBehaviour
         NUM_PROJTYPES
     }
 
-
     public float rotationSpeed = 15.0f;
     Vector3 projGravity = new Vector3(0.0f, -20.0f, 0.0f);
 
@@ -61,6 +60,11 @@ public class PlayerInput : MonoBehaviour
             case Projectiles.PISTOL:
                 projectile.transform.position = transform.position;
                 projectile.GetComponent<Particle2D>().CreateParticle2D(10.0f, 0.99f, 50.0f, transform.right, projGravity);
+                projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
+
+                BuoyancyForceGenerator buoyancy = new BuoyancyForceGenerator(projectile, projectile.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 700.0f);
+                ForceManager.instance.AddForceGen(buoyancy);
+
                 Debug.Log(currentProjectileType);
                 break;
 

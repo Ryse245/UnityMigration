@@ -87,25 +87,34 @@ public class BuoyancyForceGenerator : ForceGenerator2D
     [SerializeField]
     float mMaximumDepth, mVolume, mWaterHeight, mLiquidDensity;
 
+    public BuoyancyForceGenerator(GameObject target, float maxDepth, float volume, float waterHeight, float density)
+    {
+        mTarget = target;
+        mMaximumDepth = maxDepth;
+        mVolume = volume;
+        mWaterHeight = waterHeight;
+        mLiquidDensity = density;
+    }
+
     public override void updateForces(float dt)
     {
         Vector3 force = Vector3.zero;
         float depth = mTarget.transform.position.y;
 
         // check if out of water
-        if(depth <= mWaterHeight + mMaximumDepth)
+        if(depth >= mWaterHeight + mMaximumDepth)
         {
             return;
         }
 
-        if(depth >= mWaterHeight + mMaximumDepth)
+        if(depth <= mWaterHeight - mMaximumDepth)
         {
             force.y = mLiquidDensity * mVolume;
-            mTarget.GetComponent<Particle2D>().AddForce(-force);
             //add negative(?) force to target (that's what i have for dean)
+            mTarget.GetComponent<Particle2D>().AddForce(force);
             return;
         }
-        else if(depth >= mWaterHeight)
+        else if(depth <= mWaterHeight)
         {
             float buoyancy = mLiquidDensity * mVolume * (depth - mMaximumDepth - mWaterHeight) / (2 * mMaximumDepth);
             force.y = buoyancy;
