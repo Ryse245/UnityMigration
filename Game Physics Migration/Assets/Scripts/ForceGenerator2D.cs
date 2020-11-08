@@ -78,7 +78,7 @@ public class BuoyancyForceGenerator : ForceGenerator2D
 
     public override void updateForces(Particle2D particle, float dt)
     {
-        Vector3 force;
+        Vector3 force = Vector3.zero;
         float depth = mTarget.transform.position.y;
 
         // check if out of water
@@ -90,6 +90,7 @@ public class BuoyancyForceGenerator : ForceGenerator2D
         if(depth >= mWaterHeight + mMaximumDepth)
         {
             force.y = mLiquidDensity * mVolume;
+            mTarget.GetComponent<Particle2D>().AddForce(-force);
             //add negative(?) force to target (that's what i have for dean)
             return;
         }
@@ -98,6 +99,7 @@ public class BuoyancyForceGenerator : ForceGenerator2D
             float buoyancy = mLiquidDensity * mVolume * (depth - mMaximumDepth - mWaterHeight) / (2 * mMaximumDepth);
             force.y = buoyancy;
             //add force to target
+            mTarget.GetComponent<Particle2D>().AddForce(force);
             return;
         }
     }
