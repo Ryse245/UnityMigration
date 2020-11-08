@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForceGenerator2D : MonoBehaviour
+public class ForceGenerator2D
 {
     protected bool shouldAffectAll = true;
 
     public bool getShouldAffectAll() { return shouldAffectAll; }
+    public void setShouldAffectAll(bool should) { shouldAffectAll = should; }
 
-    public virtual void updateForces(Particle2D particle, float dt)
+    public virtual void updateForces(float dt)
     {
 
     }
@@ -17,12 +18,13 @@ public class ForceGenerator2D : MonoBehaviour
 
 public class PointForceGenerator : ForceGenerator2D
 {
+    GameObject target;
     Vector3 point;
     float magnitude;
 
-    public override void updateForces(Particle2D particle, float dt)
+    public override void updateForces(float dt)
     {
-        Vector3 diff = point - particle.transform.position;
+        Vector3 diff = point - target.transform.position;
         float range = 1000;
         float rangeSQ = 1000 * 1000;
         float distSQ = diff.sqrMagnitude;
@@ -35,6 +37,7 @@ public class PointForceGenerator : ForceGenerator2D
             diff.Normalize();
 
             //add force
+            target.GetComponent<Particle2D>().AddForce(diff);
         }
     }
 }
@@ -47,7 +50,15 @@ public class SpringForceGenerator : ForceGenerator2D
     [SerializeField]
     float springConstant, springLength;
 
-    public override void updateForces(Particle2D particle, float dt)
+    public SpringForceGenerator(GameObject first, GameObject second, float springConst, float springLen)
+    {
+        firstObj = first;
+        secondObj = second;
+        springConstant = springConst;
+        springLength = springLen;
+    }
+
+    public override void updateForces(float dt)
     {
         Vector3 pos1 = firstObj.transform.position;
         Vector3 pos2 = secondObj.transform.position;
@@ -62,10 +73,10 @@ public class SpringForceGenerator : ForceGenerator2D
         diff.Normalize();
         diff *= magnitude;
 
-        //add force "diff" to firstObj
-        firstObj.GetComponent<Particle2D>().AddForce(diff);
-        //add negative diff to secondObj
+        //add negative force "diff" to firstObj
         firstObj.GetComponent<Particle2D>().AddForce(-diff);
+        //add diff to secondObj
+        secondObj.GetComponent<Particle2D>().AddForce(diff);
     }
 }
 public class BuoyancyForceGenerator : ForceGenerator2D
@@ -76,7 +87,7 @@ public class BuoyancyForceGenerator : ForceGenerator2D
     [SerializeField]
     float mMaximumDepth, mVolume, mWaterHeight, mLiquidDensity;
 
-    public override void updateForces(Particle2D particle, float dt)
+    public override void updateForces(float dt)
     {
         Vector3 force = Vector3.zero;
         float depth = mTarget.transform.position.y;
@@ -116,7 +127,7 @@ public class AnchoredBungieForceGenerator : ForceGenerator2D
     [SerializeField]
     float mRestLength, mSpringConstant;
 
-    public override void updateForces(Particle2D particle, float dt)
+    public override void updateForces(float dt)
     {
         Vector3 force;
 

@@ -24,12 +24,18 @@ public class Particle2D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ForceManager.instance.ApplyAllForces();
         Integrate();
     }
 
     public void AddForce(Vector3 force)
     {
         mAccumulatedForces += force;
+    }
+
+    public void ClearAccumulated()
+    {
+        mAccumulatedForces = Vector3.zero;
     }
 
     void Integrate()

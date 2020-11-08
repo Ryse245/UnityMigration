@@ -6,7 +6,7 @@ public static class ParticleIntegrator
 {
     public static void Integrate(Particle2D particle, float dt)
     {
-        particle.gameObject.transform.position += particle.getVelocityRef() * dt;
+        particle.gameObject.transform.position += particle.getVelocity() * dt;
 
         Vector3 resultingAccel = particle.getAcceleration();
 
@@ -20,5 +20,7 @@ public static class ParticleIntegrator
         float damping = Mathf.Pow(particle.getDamping(), dt);
 
         particle.getVelocityRef() *= damping;
+
+        particle.ClearAccumulated();
     }
 }

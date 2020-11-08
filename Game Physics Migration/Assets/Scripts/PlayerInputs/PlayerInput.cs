@@ -67,8 +67,14 @@ public class PlayerInput : MonoBehaviour
             case Projectiles.SPRINGSHOT:
                 projectile.transform.position = transform.position;
                 GameObject secondShot = Instantiate(projectile);
-                projectile.GetComponent<Particle2D>().CreateParticle2D(10.0f, 0.99f, 50.0f, transform.right, projGravity);
-                secondShot.GetComponent<Particle2D>().CreateParticle2D(10.0f, 0.99f, 75.0f, transform.right, projGravity);
+                projectile.GetComponent<Particle2D>().CreateParticle2D(10.0f, 0.99f, 10.0f, transform.right, projGravity);
+                secondShot.GetComponent<Particle2D>().CreateParticle2D(10.0f, 0.99f, 25.0f, transform.right, projGravity);
+                projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
+                secondShot.GetComponent<Particle2D>().setShouldIgnoreForces(false);
+
+                SpringForceGenerator springGen = new SpringForceGenerator(projectile, secondShot, 2.0f, 0.5f);
+                ForceManager.instance.AddForceGen(springGen);
+
                 Debug.Log(currentProjectileType);
                 break;
 
