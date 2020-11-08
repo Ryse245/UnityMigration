@@ -18,6 +18,8 @@ public class PlayerInput : MonoBehaviour
     Projectiles currentProjectileType;
     public GameObject projectilePrefab;
 
+    List<Particle2DContact> contacts;
+
     // Update is called once per frame
     void Update()
     {
@@ -83,6 +85,18 @@ public class PlayerInput : MonoBehaviour
                 break;
 
             case Projectiles.RODSHOT:
+                projectile.transform.position = transform.position;
+                GameObject connectedShot = Instantiate(projectile);
+                projectile.GetComponent<Particle2D>().CreateParticle2D(10.0f, 0.99f, 10.0f, transform.right, projGravity);
+                connectedShot.GetComponent<Particle2D>().CreateParticle2D(10.0f, 0.99f, 25.0f, transform.right, projGravity);
+                projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
+                connectedShot.GetComponent<Particle2D>().setShouldIgnoreForces(false);
+
+                //Add Rod Link here
+                ParticleRod newRod = new ParticleRod();
+                newRod.InstantiateVariables(projectile.GetComponent<Particle2D>(), connectedShot.GetComponent<Particle2D>(), 0.5f);
+                newRod.createContacts(ref contacts);
+
                 Debug.Log(currentProjectileType);
                 break;
         }

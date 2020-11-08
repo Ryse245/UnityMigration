@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ContactResolver : MonoBehaviour
 {
+    public static ContactResolver instance;
     [SerializeField]
     int maxIterations;
 
