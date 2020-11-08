@@ -63,7 +63,9 @@ public class SpringForceGenerator : ForceGenerator2D
         diff *= magnitude;
 
         //add force "diff" to firstObj
+        firstObj.GetComponent<Particle2D>().AddForce(diff);
         //add negative diff to secondObj
+        firstObj.GetComponent<Particle2D>().AddForce(-diff);
     }
 }
 public class BuoyancyForceGenerator : ForceGenerator2D
