@@ -9,6 +9,12 @@ public class Particle2DLink : MonoBehaviour
     [SerializeField]
     protected Particle2D mObject1, mObject2;
 
+    public bool stillExists()
+    {
+        if (mObject1.Equals(null) || mObject2.Equals(null)) return false;
+        else return true;
+    }
+
     protected float getCurrentLength()
     {
         return Vector3.Distance(mObject1.transform.position, mObject2.transform.position);
@@ -27,6 +33,8 @@ public class ParticleCable : Particle2DLink
 
     public override void createContacts(ref List<Particle2DContact> contacts)
     {
+        if (mObject1 == null || mObject2 == null) return;
+
         float length = getCurrentLength();
         if (length < mMaxLength)
             return;
@@ -56,13 +64,15 @@ public class ParticleRod : Particle2DLink
 
     public override void createContacts(ref List<Particle2DContact> contacts)
     {
+        if (mObject1 == null || mObject2 == null) return;    //Patch job, need to actually remove contact from list
+
         float currentLength = getCurrentLength();
         if (currentLength == mLength) return;
 
         Vector3 normal = mObject2.transform.position - mObject1.transform.position;
         normal.Normalize();
 
-        float penetration = (currentLength - mLength);
+        float penetration = (currentLength - mLength)/10.0f;
 
         if(currentLength > mLength)
         {

@@ -18,12 +18,14 @@ public class PlayerInput : MonoBehaviour
     Projectiles currentProjectileType;
     public GameObject projectilePrefab;
 
-    List<Particle2DContact> contacts;
+    List<Particle2DLink> particleLinks = new List<Particle2DLink>();
 
     // Update is called once per frame
     void Update()
     {
         HandleInputs();
+        HandleContacts();
+        HandleForces();
     }
 
     void HandleInputs()
@@ -52,6 +54,26 @@ public class PlayerInput : MonoBehaviour
         {
             GameObject currentProj = Instantiate(projectilePrefab);
             CreateProjectile(currentProjectileType, currentProj);
+        }
+    }
+
+    void HandleContacts()
+    {
+        List<Particle2DContact> contacts = new List<Particle2DContact>();
+        foreach(Particle2DLink link in particleLinks)
+        {
+            if (!link.stillExists())particleLinks.Remove(link);
+            else link.createContacts(ref contacts);
+        }
+
+        ContactResolver.instance.resolveContacts(ref contacts, Time.deltaTime);
+    }
+
+    void HandleForces()
+    {
+        foreach(ForceGenerator2D force in ForceManager.instance.GetForces())
+        {
+            //if(force.)
         }
     }
 
@@ -94,8 +116,8 @@ public class PlayerInput : MonoBehaviour
 
                 //Add Rod Link here
                 ParticleRod newRod = new ParticleRod();
-                newRod.InstantiateVariables(projectile.GetComponent<Particle2D>(), connectedShot.GetComponent<Particle2D>(), 0.5f);
-                newRod.createContacts(ref contacts);
+                newRod.InstantiateVariables(projectile.GetComponent<Particle2D>(), connectedShot.GetComponent<Particle2D>(), 10.0f);
+                particleLinks.Add(newRod);
 
                 Debug.Log(currentProjectileType);
                 break;

@@ -11,6 +11,11 @@ public class ContactResolver : MonoBehaviour
 
     int numIterationsUsed;
 
+    private void Awake()
+    {
+        if (!instance) instance = this;
+    }
+
     public void resolveContacts(ref List<Particle2DContact> contacts, float dt)
     {
         numIterationsUsed = 0;

@@ -60,6 +60,8 @@ public class SpringForceGenerator : ForceGenerator2D
 
     public override void updateForces(float dt)
     {
+        if (firstObj == null || secondObj == null) return;  //Patch job, need to actually remove force from list
+
         Vector3 pos1 = firstObj.transform.position;
         Vector3 pos2 = secondObj.transform.position;
 
