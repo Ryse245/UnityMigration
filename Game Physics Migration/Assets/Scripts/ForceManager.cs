@@ -18,6 +18,8 @@ public class ForceManager : MonoBehaviour
         }
     }
 
+    public List<ForceGenerator2D> GetForces() { return forces; }
+
     public void AddForceGen(ForceGenerator2D force)
     {
         forces.Add(force);

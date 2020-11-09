@@ -60,6 +60,8 @@ public class SpringForceGenerator : ForceGenerator2D
 
     public override void updateForces(float dt)
     {
+        if (firstObj == null || secondObj == null) return;  //Patch job, need to actually remove force from list
+
         Vector3 pos1 = firstObj.transform.position;
         Vector3 pos2 = secondObj.transform.position;
 
@@ -98,11 +100,12 @@ public class BuoyancyForceGenerator : ForceGenerator2D
 
     public override void updateForces(float dt)
     {
+        if (mTarget == null) return;  //Patch job, need to actually remove force from list
         Vector3 force = Vector3.zero;
         float depth = mTarget.transform.position.y;
 
         // check if out of water
-        if(depth >= mWaterHeight + mMaximumDepth)
+        if(depth >= mWaterHeight) //+ mMaximumDepth)
         {
             return;
         }
@@ -114,14 +117,14 @@ public class BuoyancyForceGenerator : ForceGenerator2D
             mTarget.GetComponent<Particle2D>().AddForce(force);
             return;
         }
-        else if(depth <= mWaterHeight)
-        {
+        //else if(depth <= mWaterHeight)
+        //{
             float buoyancy = mLiquidDensity * mVolume * (depth - mMaximumDepth - mWaterHeight) / (2 * mMaximumDepth);
             force.y = buoyancy;
             //add force to target
             mTarget.GetComponent<Particle2D>().AddForce(force);
             return;
-        }
+        //}
     }
 }
 

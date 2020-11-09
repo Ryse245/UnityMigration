@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Particle2DContact : MonoBehaviour
+public class Particle2DContact
 {
     public GameObject firstContact, secondContact; //AAAAAAAAAAAAA NAMING
     public Vector3 contactNormal, firstMove, secondMove;   //Not sure about the "moves" tbh, but Dean says we'd need them

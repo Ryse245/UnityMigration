@@ -5,10 +5,16 @@ using UnityEngine;
 
 public class ContactResolver : MonoBehaviour
 {
+    public static ContactResolver instance;
     [SerializeField]
     int maxIterations;
 
     int numIterationsUsed;
+
+    private void Awake()
+    {
+        if (!instance) instance = this;
+    }
 
     public void resolveContacts(ref List<Particle2DContact> contacts, float dt)
     {
