@@ -19,6 +19,8 @@ public class Particle2D : MonoBehaviour
         mDamping = damping;
         mVelocity = direction * speed;
         mAcceleration = gravity;
+
+        GameManager.instance.particleArray.Add(this);
     }
 
     // Update is called once per frame
@@ -29,6 +31,11 @@ public class Particle2D : MonoBehaviour
             ForceManager.instance.ApplyAllForces();
             Integrate();
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.instance.particleArray.Remove(this);
     }
 
     public void AddForce(Vector3 force)

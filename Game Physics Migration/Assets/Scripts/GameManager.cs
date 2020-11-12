@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     const float MAX_X_POS = 31.0f;
     const float MIN_X_POS = 0.0f;
     const float Y_POS = 9.0f;
@@ -13,7 +15,13 @@ public class GameManager : MonoBehaviour
     public GameObject target;
     public int score = 0;
     public Text ScoreText;
-    Particle2D[] particleArray;
+    public List<Particle2D> particleArray;
+
+    private void Awake()
+    {
+        if(!instance)
+            instance = this;
+    }
 
     private void Start()
     {
@@ -27,7 +35,21 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
-        particleArray = GameObject.FindObjectsOfType<Particle2D>();
+
+        // Check for colliding particles
+        for(int i = 0; i < particleArray.Count; i++)
+        {
+            for(int j = i + 1; j < particleArray.Count; j++)
+            {
+                if (CollisionDetector.CheckForCollision(particleArray[i], particleArray[j]))
+                {
+                    // destroy both particles if colliding
+                    Destroy(particleArray[i].gameObject);
+                    Destroy(particleArray[j].gameObject);
+                }
+            }
+        }
+
         if(CheckForHit())
         {
             ChangePos();

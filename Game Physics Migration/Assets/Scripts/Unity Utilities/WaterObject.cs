@@ -8,7 +8,7 @@ public class WaterObject : MonoBehaviour
 
     void Start()
     {
-        Vector3 offset = transform.up * (transform.localScale.y / 2f) * 1f;
+        Vector3 offset = transform.up * (transform.localScale.y / 2f);
         waterTopPos = transform.position + offset; //This is the position of the top of the water (from center), which means we can use the y as waterheight
     }
 
