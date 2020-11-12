@@ -81,12 +81,16 @@ public class PlayerInput : MonoBehaviour
                 BuoyancyForceGenerator buoyancy = new BuoyancyForceGenerator(projectile, projectile.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 80.0f);
                 ForceManager.instance.AddForceGen(buoyancy);
 
+                projectile.GetComponent<Particle2D>().setParticleInstantiated(true);
                 Debug.Log(currentProjectileType);
                 break;
 
             case Projectiles.SPRINGSHOT:
                 projectile.transform.position = transform.position;
                 GameObject secondShot = Instantiate(projectile);
+                Vector3 newPos = new Vector3(0.0f, 2.0f, 0.0f);
+                secondShot.transform.position = newPos;
+
                 projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity);
                 secondShot.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 25.0f, transform.right, projGravity);
                 projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
@@ -101,18 +105,22 @@ public class PlayerInput : MonoBehaviour
                 BuoyancyForceGenerator springBuoy2 = new BuoyancyForceGenerator(projectile, projectile.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 80.0f);
                 ForceManager.instance.AddForceGen(springBuoy2);
 
+                projectile.GetComponent<Particle2D>().setParticleInstantiated(true);
+                secondShot.GetComponent<Particle2D>().setParticleInstantiated(true);
+
                 Debug.Log(currentProjectileType);
                 break;
 
             case Projectiles.RODSHOT:
                 projectile.transform.position = transform.position;
                 GameObject connectedShot = Instantiate(projectile);
+                Vector3 changePos = new Vector3(0.0f, 2.0f, 0.0f);
+                connectedShot.transform.position = changePos;
                 projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity);
                 connectedShot.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 25.0f, transform.right, projGravity);
                 projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
                 connectedShot.GetComponent<Particle2D>().setShouldIgnoreForces(false);
 
-                //Add Rod Link here
                 ParticleRod newRod = new ParticleRod();
                 newRod.InstantiateVariables(projectile.GetComponent<Particle2D>(), connectedShot.GetComponent<Particle2D>(), 10.0f);
                 particleLinks.Add(newRod);
@@ -122,7 +130,9 @@ public class PlayerInput : MonoBehaviour
 
                 BuoyancyForceGenerator rodBuoy2 = new BuoyancyForceGenerator(projectile, projectile.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 80.0f);
                 ForceManager.instance.AddForceGen(rodBuoy2);
-                
+
+                projectile.GetComponent<Particle2D>().setParticleInstantiated(true);
+                connectedShot.GetComponent<Particle2D>().setParticleInstantiated(true);
                 Debug.Log(currentProjectileType);
                 break;
         }

@@ -13,6 +13,8 @@ public class Particle2D : MonoBehaviour
     [SerializeField]
     bool shouldIgnoreForces = false;
 
+    bool particleInstantiated = false;
+
     public void CreateParticle2D(float mass, float damping, float speed, Vector3 direction, Vector3 gravity)
     {
         mMass = mass;
@@ -108,6 +110,16 @@ public class Particle2D : MonoBehaviour
     public bool getShouldIgnoreForces()
     {
         return shouldIgnoreForces;
+    }
+
+    public bool getParticleInstantiated()
+    {
+        return particleInstantiated;
+    }
+
+    public void setParticleInstantiated(bool isInstantiated)
+    {
+        particleInstantiated = isInstantiated;
     }
     #endregion
 }

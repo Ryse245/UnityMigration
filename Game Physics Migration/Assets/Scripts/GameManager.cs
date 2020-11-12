@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         {
             for(int j = i + 1; j < particleArray.Count; j++)
             {
-                if (CollisionDetector.CheckForCollision(particleArray[i], particleArray[j]))
+                if (CollisionDetector.CheckForCollision(particleArray[i], particleArray[j])&&(particleArray[i].getParticleInstantiated()&&particleArray[j].getParticleInstantiated()))
                 {
                     // destroy both particles if colliding
                     Destroy(particleArray[i].gameObject);
