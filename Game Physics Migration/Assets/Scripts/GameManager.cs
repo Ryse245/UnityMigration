@@ -35,9 +35,8 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
-
         // Check for colliding particles
-        for(int i = 0; i < particleArray.Count; i++)
+        for (int i = 0; i < particleArray.Count; i++)
         {
             for(int j = i + 1; j < particleArray.Count; j++)
             {
@@ -49,17 +48,17 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
-        if(CheckForHit())
+        if (CheckForHit())
         {
             ChangePos();
         }
         ScoreText.text = SCORESTRING + score.ToString();
+
     }
 
     bool CheckForHit()
     {
-        foreach(Particle2D particle in particleArray)
+        foreach (Particle2D particle in particleArray)
         {
             if(particle != target.GetComponent<Particle2D>())
             {
@@ -83,4 +82,5 @@ public class GameManager : MonoBehaviour
 
         score++;
     }
+
 }

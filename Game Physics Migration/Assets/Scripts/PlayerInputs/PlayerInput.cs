@@ -15,21 +15,31 @@ public class PlayerInput : MonoBehaviour
     public float rotationSpeed = 15.0f;
     Vector3 projGravity = new Vector3(0.0f, -20.0f, 0.0f);
 
-    Projectiles currentProjectileType;
+    Projectiles currentProjectileType = Projectiles.PISTOL;
     public GameObject projectilePrefab;
 
     List<Particle2DLink> particleLinks = new List<Particle2DLink>();
 
+    public bool autoFire = false;
+    float autoShootTimer = 0.0f;
+    public float autoMaxTime = 0.5f;
+
     // Update is called once per frame
     void Update()
     {
-        HandleInputs();
+        if(autoFire)
+        {
+            FireRandom();
+        }
+        else
+        {
+            HandleInputs();
+        }
         HandleContacts();
     }
 
     void HandleInputs()
     {
-        float zAngle = transform.rotation.z;
         //Player rotation is around the Z-Axis
         if(Input.GetKey(KeyCode.Alpha1))
         {
@@ -56,17 +66,51 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    void FireRandom()
+    {
+        if (autoShootTimer >= autoMaxTime)
+        {
+            float rotateRange = Random.Range(0.0f, rotationSpeed);
+            rotateRange *= RandomSign();
+            transform.Rotate(Vector3.forward, rotateRange);
+            GameObject currentProj = Instantiate(projectilePrefab);
+            CreateProjectile_Simple(currentProj);
+            autoShootTimer = 0.0f;
+        }
+        else autoShootTimer += Time.deltaTime;
+    }
+
+    float RandomSign()
+    {
+        if ((int)Random.Range(0.0f, 2.0f) > 0)
+        {
+            return 1.0f;
+        }
+        else return -1.0f;
+    }
+
     void HandleContacts()
     {
         List<Particle2DContact> contacts = new List<Particle2DContact>();
         
         foreach(Particle2DLink link in particleLinks)
         {
-            /*if (!link.stillExists())particleLinks.Remove(link);
-            else*/ link.createContacts(ref contacts);
+            link.createContacts(ref contacts);
         }
         
         ContactResolver.instance.resolveContacts(ref contacts, Time.deltaTime);
+    }
+
+    void CreateProjectile_Simple(GameObject projectile)
+    {
+        projectile.transform.position = transform.position;
+        projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity, true);
+        projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
+
+        BuoyancyForceGenerator buoyancy = new BuoyancyForceGenerator(projectile, projectile.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 80.0f);
+        ForceManager.instance.AddForceGen(buoyancy);
+
+        projectile.GetComponent<Particle2D>().setParticleInstantiated(true);
     }
 
     void CreateProjectile(Projectiles projectileType, GameObject projectile)
@@ -75,7 +119,7 @@ public class PlayerInput : MonoBehaviour
         {
             case Projectiles.PISTOL:
                 projectile.transform.position = transform.position;
-                projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity);
+                projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity, true);
                 projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
 
                 BuoyancyForceGenerator buoyancy = new BuoyancyForceGenerator(projectile, projectile.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 80.0f);
@@ -91,8 +135,8 @@ public class PlayerInput : MonoBehaviour
                 Vector3 newPos = new Vector3(0.0f, 2.0f, 0.0f);
                 secondShot.transform.position = newPos;
 
-                projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity);
-                secondShot.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 25.0f, transform.right, projGravity);
+                projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity, true);
+                secondShot.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 25.0f, transform.right, projGravity, true);
                 projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
                 secondShot.GetComponent<Particle2D>().setShouldIgnoreForces(false);
 
@@ -116,8 +160,8 @@ public class PlayerInput : MonoBehaviour
                 GameObject connectedShot = Instantiate(projectile);
                 Vector3 changePos = new Vector3(0.0f, 2.0f, 0.0f);
                 connectedShot.transform.position = changePos;
-                projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity);
-                connectedShot.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 25.0f, transform.right, projGravity);
+                projectile.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 10.0f, transform.right, projGravity, true);
+                connectedShot.GetComponent<Particle2D>().CreateParticle2D(2.0f, 0.99f, 25.0f, transform.right, projGravity, true);
                 projectile.GetComponent<Particle2D>().setShouldIgnoreForces(false);
                 connectedShot.GetComponent<Particle2D>().setShouldIgnoreForces(false);
 

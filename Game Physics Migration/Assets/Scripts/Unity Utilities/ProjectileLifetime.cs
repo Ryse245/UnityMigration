@@ -10,7 +10,10 @@ public class ProjectileLifetime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentTime >= maxLifetime) Destroy(this.gameObject);
+        if (currentTime >= maxLifetime)
+        {
+            Destroy(this.gameObject);
+        }
         else currentTime += Time.deltaTime;
     }
 }

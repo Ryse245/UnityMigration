@@ -13,14 +13,20 @@ public class Particle2D : MonoBehaviour
     [SerializeField]
     bool shouldIgnoreForces = false;
 
-    bool particleInstantiated = false;
+    private bool particleInstantiated = false;
 
-    public void CreateParticle2D(float mass, float damping, float speed, Vector3 direction, Vector3 gravity)
+    private bool mIsProjectile = false;
+    private float mProjTimer = 0.0f;
+    private float mProjMaxTime = 5.0f;
+
+
+    public void CreateParticle2D(float mass, float damping, float speed, Vector3 direction, Vector3 gravity, bool isProjectile)
     {
         mMass = mass;
         mDamping = damping;
         mVelocity = direction * speed;
         mAcceleration = gravity;
+        mIsProjectile = isProjectile;
 
         GameManager.instance.particleArray.Add(this);
     }
@@ -32,6 +38,15 @@ public class Particle2D : MonoBehaviour
         {
             ForceManager.instance.ApplyAllForces();
             Integrate();
+        }
+        if(mIsProjectile)
+        {
+            if (mProjTimer >= mProjMaxTime)
+            {
+                this.OnDestroy();
+                Destroy(this.gameObject);
+            }
+            else mProjTimer += Time.deltaTime;
         }
     }
 

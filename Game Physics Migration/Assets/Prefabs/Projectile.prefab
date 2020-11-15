@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3718053653539807222}
   - component: {fileID: 7148043260670742011}
   - component: {fileID: 4008214501032754372}
-  - component: {fileID: 2468510686825458309}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -101,16 +100,3 @@ MonoBehaviour:
   mAcceleration: {x: 0, y: 0, z: 0}
   mAccumulatedForces: {x: 0, y: 0, z: 0}
   shouldIgnoreForces: 0
---- !u!114 &2468510686825458309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2498438379833424671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b314b1138bb0743ad68f0bb1c52403, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxLifetime: 5
