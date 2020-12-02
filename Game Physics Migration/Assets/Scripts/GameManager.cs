@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public Text ScoreText;
     public List<Particle2D> particleArray;
 
+    bool isScoring = true;
+
     private void Awake()
     {
         if(!instance)
@@ -52,7 +54,10 @@ public class GameManager : MonoBehaviour
         {
             ChangePos();
         }
-        ScoreText.text = SCORESTRING + score.ToString();
+        if(isScoring)   //Was here to mitigate errors, but I tihnk the project just didn't compile correctly since it's working fine now
+        {
+            ScoreText.text = SCORESTRING + score.ToString();
+        }
 
     }
 
