@@ -27,7 +27,10 @@ public class Particle2D : MonoBehaviour
         mVelocity = direction * speed;
         mAcceleration = gravity;
         mIsProjectile = isProjectile;
+    }
 
+    void Start()
+    {
         GameManager.instance.particleArray.Add(this);
     }
 

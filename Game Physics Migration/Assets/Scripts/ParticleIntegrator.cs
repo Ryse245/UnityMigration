@@ -12,6 +12,8 @@ public static class ParticleIntegrator
 
         if(!particle.getShouldIgnoreForces())
         {
+            Vector3 accel = particle.getAccumulatedForces();
+            accel *= particle.getInverseMass();
             resultingAccel += particle.getAccumulatedForces() * particle.getInverseMass();
         }
 

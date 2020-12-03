@@ -27,8 +27,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        BuoyancyForceGenerator buoyancy = new BuoyancyForceGenerator(target, target.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 15.0f);
-        ForceManager.instance.AddForceGen(buoyancy);
+        if(target)
+        {
+            BuoyancyForceGenerator buoyancy = new BuoyancyForceGenerator(target, target.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 15.0f);
+            ForceManager.instance.AddForceGen(buoyancy);
+        }
     }
     // Update is called once per frame
     void Update()
@@ -50,15 +53,18 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        if (CheckForHit())
-        {
-            ChangePos();
-        }
-        if(isScoring)   //Was here to mitigate errors, but I tihnk the project just didn't compile correctly since it's working fine now
-        {
-            ScoreText.text = SCORESTRING + score.ToString();
-        }
 
+        if(target)
+        {
+            if (CheckForHit())
+            {
+                ChangePos();
+            }
+            if (isScoring)   //Was here to mitigate errors, but I tihnk the project just didn't compile correctly since it's working fine now
+            {
+                ScoreText.text = SCORESTRING + score.ToString();
+            }
+        }
     }
 
     bool CheckForHit()

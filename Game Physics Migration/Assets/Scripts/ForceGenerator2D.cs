@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForceGenerator2D
+[RequireComponent(typeof(Particle2D))]
+public class ForceGenerator2D : MonoBehaviour
 {
     protected bool shouldAffectAll = true;
 
