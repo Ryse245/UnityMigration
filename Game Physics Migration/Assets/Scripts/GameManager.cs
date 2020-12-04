@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public Text ScoreText;
     public List<Particle2D> particleArray;
 
-    bool isScoring = true;
+    bool isScoring = false;
 
     private void Awake()
     {
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
         // Check for colliding particles
         for (int i = 0; i < particleArray.Count; i++)
         {
+            /*
             for(int j = i + 1; j < particleArray.Count; j++)
             {
                 if (CollisionDetector.CheckForCollision(particleArray[i], particleArray[j])&&(particleArray[i].getParticleInstantiated()&&particleArray[j].getParticleInstantiated()))
@@ -52,8 +53,9 @@ public class GameManager : MonoBehaviour
                     Destroy(particleArray[j].gameObject);
                 }
             }
+            */
         }
-
+        /*
         if(target)
         {
             if (CheckForHit())
@@ -65,8 +67,9 @@ public class GameManager : MonoBehaviour
                 ScoreText.text = SCORESTRING + score.ToString();
             }
         }
+        */
     }
-
+    /*
     bool CheckForHit()
     {
         foreach (Particle2D particle in particleArray)
@@ -93,5 +96,5 @@ public class GameManager : MonoBehaviour
 
         score++;
     }
-
+    */
 }

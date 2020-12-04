@@ -11,7 +11,7 @@ public class GravityGenerator : ForceGenerator2D
     Particle2D particle;
     List<GameObject> influences;
 
-    float G = 6.67f * Mathf.Pow(10, -11);
+    float G = 6.67f * Mathf.Pow(10, -5);    //Changed power from -11 to speed up
 
     void Start()
     {
