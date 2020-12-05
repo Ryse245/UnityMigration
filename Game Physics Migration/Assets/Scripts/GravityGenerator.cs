@@ -7,11 +7,15 @@ public class GravityGenerator : ForceGenerator2D
 {
     public int maxInfluences = 1;
     public float maxDistance = 1000;
+    public GameObject orbitBody = null;
 
     Particle2D particle;
     List<GameObject> influences;
+    bool firstRun = true;
 
     float G = 6.67f * Mathf.Pow(10, -5);    //Changed power from -11 to speed up
+
+    Vector3 g1, g2;
 
     void Start()
     {
@@ -23,6 +27,15 @@ public class GravityGenerator : ForceGenerator2D
 
     void Update()
     {
+        if(firstRun)
+        {
+            orbitBody = GetOrbitBody();
+
+            particle.setVelocity(CalcOrbitVelocity());
+
+            firstRun = false;
+        }
+
         GetInfluences();
     }
 
@@ -67,5 +80,94 @@ public class GravityGenerator : ForceGenerator2D
                 }
             }
         }
+    }
+
+    private GameObject GetOrbitBody()
+    {
+        GameObject obj = null;
+
+        List<Particle2D> particles = new List<Particle2D>();
+
+        int closestIndex = -1, heaviestIndex = -2;
+        float minDist = float.MaxValue;
+        float maxMass = float.MinValue;
+
+        particles = GameManager.instance.particleArray;
+
+        if (particles.Count == 2)
+        {
+            if(particle.getMass() >= particles[1].getMass())
+                return null;
+            else
+            {
+                return particles[1].gameObject;
+            }
+        }
+
+        //while(closestIndex != heaviestIndex)
+        //{
+        //    int i;
+        //    for (i = 0; i < particles.Count; i++)
+        //    {
+        //        float dist = Vector3.Distance(transform.position, particles[i].transform.position);
+        //        float otherMass = particles[i].getMass();
+
+        //        if (dist < minDist)
+        //        {
+        //            closestIndex = i;
+        //        }
+
+        //        if (otherMass > maxMass)
+        //        {
+        //            heaviestIndex = i;
+        //        }
+        //    }
+
+        //    if (i == 0)
+        //        continue;
+
+        //    if(closestIndex != heaviestIndex)
+        //    {
+        //        particles.RemoveAt(closestIndex);
+        //    }
+
+        //}
+
+
+        //obj = particles[closestIndex].gameObject;
+
+        return obj;
+    }
+
+    private Vector3 CalcOrbitVelocity()
+    {
+        Vector3 result = Vector3.zero;
+
+        Vector3 toOrbitBody = orbitBody.transform.position - transform.position;
+        g1 = toOrbitBody;
+
+        Vector3 tangentialDirection = Vector3.Cross(toOrbitBody, transform.up);
+
+        float rVel = Mathf.Sqrt((G * particle.getMass() + orbitBody.GetComponent<Particle2D>().getMass()) / Vector3.Distance(transform.position, orbitBody.transform.position));
+
+        rVel /= 90.0f;
+
+        tangentialDirection.Normalize();
+        g2 = tangentialDirection;
+
+        result = tangentialDirection * rVel;
+
+        return result;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawLine(orbitBody.transform.position, this.transform.position);
+
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawLine(transform.position, transform.position + g2 * 10000);
     }
 }

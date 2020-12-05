@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject target;
     public int score = 0;
     public Text ScoreText;
-    public List<Particle2D> particleArray;
+    public List<Particle2D> particleArray = new List<Particle2D>();
 
     bool isScoring = false;
 
