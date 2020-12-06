@@ -11,16 +11,15 @@ public class GravityGenerator : ForceGenerator2D
 
     Particle2D particle;
     List<GameObject> influences;
-    bool firstRun = true;
+    bool firstRun;
 
     float G = 6.67f * Mathf.Pow(10, -5);    //Changed power from -11 to speed up
-
-    Vector3 g1, g2;
 
     void Start()
     {
         particle = GetComponent<Particle2D>();
         influences = new List<GameObject>();
+        firstRun = true;
 
         ForceManager.instance.AddForceGen(this);
     }
@@ -29,11 +28,10 @@ public class GravityGenerator : ForceGenerator2D
     {
         if(firstRun)
         {
+            firstRun = false;
             orbitBody = GetOrbitBody();
 
             particle.setVelocity(CalcOrbitVelocity());
-
-            firstRun = false;
         }
 
         GetInfluences();
@@ -88,9 +86,8 @@ public class GravityGenerator : ForceGenerator2D
 
         List<Particle2D> particles = new List<Particle2D>();
 
-        int closestIndex = -1, heaviestIndex = -2;
-        float minDist = float.MaxValue;
-        float maxMass = float.MinValue;
+        float highestGravForce = float.MinValue;
+        int highestGravIndex = -1;
 
         particles = GameManager.instance.particleArray;
 
@@ -104,37 +101,21 @@ public class GravityGenerator : ForceGenerator2D
             }
         }
 
-        //while(closestIndex != heaviestIndex)
-        //{
-        //    int i;
-        //    for (i = 0; i < particles.Count; i++)
-        //    {
-        //        float dist = Vector3.Distance(transform.position, particles[i].transform.position);
-        //        float otherMass = particles[i].getMass();
+        for(int i = 0; i < particles.Count; i++)
+        {
+            if(particles[i] != particle)
+            {
+                float force = CalculateGravForce(particles[i].gameObject).magnitude;
 
-        //        if (dist < minDist)
-        //        {
-        //            closestIndex = i;
-        //        }
+                if(force > highestGravForce)
+                {
+                    highestGravForce = force;
+                    highestGravIndex = i;
+                }
+            }
+        }
 
-        //        if (otherMass > maxMass)
-        //        {
-        //            heaviestIndex = i;
-        //        }
-        //    }
-
-        //    if (i == 0)
-        //        continue;
-
-        //    if(closestIndex != heaviestIndex)
-        //    {
-        //        particles.RemoveAt(closestIndex);
-        //    }
-
-        //}
-
-
-        //obj = particles[closestIndex].gameObject;
+        obj = particles[highestGravIndex].gameObject;
 
         return obj;
     }
@@ -144,30 +125,15 @@ public class GravityGenerator : ForceGenerator2D
         Vector3 result = Vector3.zero;
 
         Vector3 toOrbitBody = orbitBody.transform.position - transform.position;
-        g1 = toOrbitBody;
 
         Vector3 tangentialDirection = Vector3.Cross(toOrbitBody, transform.up);
 
-        float rVel = Mathf.Sqrt((G * (particle.getMass() + orbitBody.GetComponent<Particle2D>().getMass())) / Vector3.Distance(transform.position, orbitBody.transform.position));
-
-        //rVel /= 90.0f;
+        float rVel = Mathf.Sqrt(G * (particle.getMass() + orbitBody.GetComponent<Particle2D>().getMass()) / Vector3.Distance(transform.position, orbitBody.transform.position));
 
         tangentialDirection.Normalize();
-        g2 = tangentialDirection;
 
         result = tangentialDirection * rVel;
 
         return result;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-
-        Gizmos.DrawLine(orbitBody.transform.position, this.transform.position);
-
-        Gizmos.color = Color.green;
-
-        Gizmos.DrawLine(transform.position, transform.position + g2 * 10000);
     }
 }
