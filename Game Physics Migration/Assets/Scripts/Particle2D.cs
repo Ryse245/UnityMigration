@@ -70,7 +70,7 @@ public class Particle2D : MonoBehaviour
 
     void Integrate()
     {
-        ParticleIntegrator.Integrate(this.GetComponent<Particle2D>(), Time.deltaTime);
+        ParticleIntegrator.Integrate(this.GetComponent<Particle2D>(), Time.deltaTime * GameManager.instance.timeScale);
     }
 
     #region Getters/Setters

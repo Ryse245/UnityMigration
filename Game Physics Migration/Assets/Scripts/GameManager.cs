@@ -13,9 +13,12 @@ public class GameManager : MonoBehaviour
     const string SCORESTRING = "Score: ";
 
     public GameObject target;
+    public Slider timeScaleUI;
+
     public int score = 0;
     public Text ScoreText;
     public List<Particle2D> particleArray = new List<Particle2D>();
+    public float timeScale = 1.0f;
 
     bool isScoring = false;
 
@@ -23,6 +26,9 @@ public class GameManager : MonoBehaviour
     {
         if(!instance)
             instance = this;
+
+        if (timeScaleUI)
+            timeScaleUI.value = timeScale;
     }
 
     private void Start()
@@ -36,10 +42,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+        
         // Check for colliding particles
         for (int i = 0; i < particleArray.Count; i++)
         {
@@ -69,6 +72,12 @@ public class GameManager : MonoBehaviour
         }
         */
     }
+
+    public void UpdateTimeScale()
+    {
+        timeScale = timeScaleUI.value;
+    }
+
     /*
     bool CheckForHit()
     {

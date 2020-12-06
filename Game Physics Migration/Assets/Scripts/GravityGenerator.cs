@@ -148,9 +148,9 @@ public class GravityGenerator : ForceGenerator2D
 
         Vector3 tangentialDirection = Vector3.Cross(toOrbitBody, transform.up);
 
-        float rVel = Mathf.Sqrt((G * particle.getMass() + orbitBody.GetComponent<Particle2D>().getMass()) / Vector3.Distance(transform.position, orbitBody.transform.position));
+        float rVel = Mathf.Sqrt((G * (particle.getMass() + orbitBody.GetComponent<Particle2D>().getMass())) / Vector3.Distance(transform.position, orbitBody.transform.position));
 
-        rVel /= 90.0f;
+        //rVel /= 90.0f;
 
         tangentialDirection.Normalize();
         g2 = tangentialDirection;
