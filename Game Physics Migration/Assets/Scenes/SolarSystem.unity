@@ -1296,7 +1296,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 4000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1348,11 +1348,11 @@ MonoBehaviour:
   _translationSpeed: 55
   _enableMovement: 1
   _movementSpeed: 10
-  _boostedSpeed: 50
+  _boostedSpeed: 100
   _boostSpeed: 304
   _moveUp: 101
   _moveDown: 113
-  _enableSpeedAcceleration: 1
+  _enableSpeedAcceleration: 0
   _speedAccelerationFactor: 1.5
   _initPositonButton: 114
 --- !u!1001 &6914447048533152401
@@ -1362,10 +1362,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6914447048187971745, guid: 0def18dc481457442a92f89519c27f7f, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6914447048187971749, guid: 0def18dc481457442a92f89519c27f7f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 34.2

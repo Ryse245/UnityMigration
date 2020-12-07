@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67998b7cbfbb5d949abe2f1f2121b649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxInfluences: 1
+  maxInfluences: 2
   maxDistance: 10000
   orbitBody: {fileID: 0}
 --- !u!1 &8000254974544068358
