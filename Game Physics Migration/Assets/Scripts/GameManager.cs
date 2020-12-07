@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 
     bool isScoring = false;
 
+    GameObject playerCamera;
+    public GameObject planetPrefab;
+
     private void Awake()
     {
         if(!instance)
@@ -38,15 +41,21 @@ public class GameManager : MonoBehaviour
             BuoyancyForceGenerator buoyancy = new BuoyancyForceGenerator(target, target.transform.localScale.y / 2.0f, 1.0f, WaterObject.waterTopPos.y, 15.0f);
             ForceManager.instance.AddForceGen(buoyancy);
         }
+
+        playerCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(planetPrefab, playerCamera.transform.position, playerCamera.transform.rotation);
+        }
+        /*
         // Check for colliding particles
         for (int i = 0; i < particleArray.Count; i++)
         {
-            /*
+            
             for(int j = i + 1; j < particleArray.Count; j++)
             {
                 if (CollisionDetector.CheckForCollision(particleArray[i], particleArray[j])&&(particleArray[i].getParticleInstantiated()&&particleArray[j].getParticleInstantiated()))
@@ -56,9 +65,7 @@ public class GameManager : MonoBehaviour
                     Destroy(particleArray[j].gameObject);
                 }
             }
-            */
         }
-        /*
         if(target)
         {
             if (CheckForHit())
