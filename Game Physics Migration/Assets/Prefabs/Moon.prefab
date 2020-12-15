@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 3280715632330658271}
   m_Layer: 0
   m_Name: Moon
-  m_TagString: Particle
+  m_TagString: Moon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -244,5 +244,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxInfluences: 1
-  maxDistance: 100
+  maxDistance: 300
   orbitBody: {fileID: 0}

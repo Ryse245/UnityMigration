@@ -58,10 +58,7 @@ public class GravityGenerator : ForceGenerator2D
         float forceMag = (G * m1 * m2) / distSq;
 
         result = Vector3.Normalize((obj.transform.position - transform.position)) * forceMag;
-        /*
-        if(orbitBody!=null)
-            result += orbitBody.GetComponent<Particle2D>().getVelocity();
-        */
+
         return result;
     }
 
@@ -109,11 +106,23 @@ public class GravityGenerator : ForceGenerator2D
             if(particles[i] != particle)
             {
                 float force = CalculateGravForce(particles[i].gameObject).magnitude;
-
-                if(force > highestGravForce && Vector3.Distance(gameObject.transform.position,particles[i].transform.position)<=maxDistance)    //Added the distance check so the moon wouldn't just try to orbit the sun
+                if(gameObject.tag=="Moon")
                 {
-                    highestGravForce = force;
-                    highestGravIndex = i;
+                    if (force > highestGravForce && Vector3.Distance(gameObject.transform.position, particles[i].transform.position) <= maxDistance)
+                    {
+                        highestGravForce = force;
+                        highestGravIndex = i;
+                    }
+
+                }
+                else
+                {
+                    if(force > highestGravForce)
+                    {
+                        highestGravForce = force;
+                        highestGravIndex = i;
+                    }
+
                 }
             }
         }
